@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Projects Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --background: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .projects-grid {
+            padding: 6rem 0;
+            background: var(--background);
+        }
+
+        .projects-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .project-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-media {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .project-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .video-overlay.playing {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        .play-btn i {
+            font-size: 1.5rem;
+            margin-left: 4px;
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 2rem;
+            color: var(--white);
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateY(0);
+        }
+
+        .project-category {
+            display: inline-block;
+            background: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-overlay p {
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .project-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .project-link:hover {
+            color: var(--primary);
+        }
+
+        /* Loading Animation */
+        .media-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .projects-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .project-overlay {
+                transform: translateY(0);
+                background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            }
+
+            .project-media {
+                height: 250px;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<style>
+    *,
+    *::before,
+    *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+    }
+
+    :root {
+        --primary: #2196F3;
+        --primary-dark: #1976D2;
+        --secondary: #333;
+        --text-dark: #1a1a1a;
+        --text-light: #666;
+        --background: #f8f9fa;
+        --white: #ffffff;
+        --transition: all 0.3s ease;
+        --shadow: 0 5px 15px rgba(0,0,0,0.1);
+        --container: 1400px;
+    }
+
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: var(--container);
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Header Styles */
+    .header {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        transition: var(--transition);
+    }
+
+    .header.scrolled {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow);
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 0;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        text-decoration: none;
+        letter-spacing: -1px;
+    }
+
+    .logo span {
+        color: var(--primary);
+    }
+
+    .nav-list {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+    }
+
+    .nav-link {
+        color: var(--text-dark);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        position: relative;
+        transition: var(--transition);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: var(--transition);
+    }
+
+    .nav-link:hover {
+        color: var(--primary);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .mobile-menu-btn span {
+        display: block;
+        width: 25px;
+        height: 2px;
+        background: var(--text-dark);
+        margin: 5px 0;
+        transition: var(--transition);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .mobile-menu-btn {
+            display: block;
+        }
+
+        .nav-list {
+            position: fixed;
+            top: 80px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 80px);
+            background: var(--white);
+            flex-direction: column;
+            align-items: center;
+            padding-top: 3rem;
+            transition: var(--transition);
+        }
+
+        .nav-list.active {
+            left: 0;
+        }
+
+        .nav-item {
+            margin: 1.5rem 0;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container header-container">
+        <a href="#" class="logo">Archi<span>structure</span>Group</a>
+        <button class="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="projects.html" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#team" class="nav-link">Team</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+<body>
+    <section class="projects-grid">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Projects</h2>
+                <p>Explore our diverse portfolio of architectural innovations</p>
+            </div>
+            
+            <div class="projects-wrapper">
+                <!-- Crystal Tower Project -->
+                <div class="project-card">
+                    <div class="project-media">
+                        <video class="project-video" 
+                               playsinline preload="metadata" controls autoplay>
+                            <source src="01.mp4" 
+                                    type="video/mp4">
+                        </video>
+                        <div class="video-overlay">
+                            <button class="play-btn" aria-label="Play video">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="media-loading"></div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="project-card">
+                <div class="project-media">
+                    <video class="project-video" 
+                           playsinline preload="metadata" controls autoplay>
+                        <source src="video tech.mp4" 
+                                type="video/mp4">
+                    </video>
+                    <div class="video-overlay">
+                        <button class="play-btn" aria-label="Play video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="media-loading"></div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoCards = document.querySelectorAll('.project-card');
+            
+            videoCards.forEach(card => {
+                const video = card.querySelector('video');
+                const playBtn = card.querySelector('.play-btn');
+                const overlay = card.querySelector('.video-overlay');
+                const loadingSpinner = card.querySelector('.media-loading');
+
+                // Show loading spinner when video starts loading
+                video.addEventListener('loadstart', () => {
+                    loadingSpinner.style.display = 'block';
+                });
+
+                // Hide loading spinner when video can play
+                video.addEventListener('canplay', () => {
+                    loadingSpinner.style.display = 'none';
+                });
+
+                // Handle video errors
+                video.addEventListener('error', () => {
+                    loadingSpinner.style.display = 'none';
+                    console.error('Video loading error:', video.error);
+                });
+
+                // Enable click anywhere on the video container to play/pause
+                card.querySelector('.project-media').addEventListener('click', (e) => {
+                    // Prevent click when clicking overlay content
+                    if (e.target.closest('.project-overlay')) return;
+                    
+                    if (video.paused) {
+                        // Pause all other videos
+                        document.querySelectorAll('.project-video').forEach(v => {
+                            if (v !== video) {
+                                v.pause();
+                                v.closest('.project-media').querySelector('.video-overlay').classList.remove('playing');
+                                v.closest('.project-media').querySelector('.play-btn').innerHTML = '<i class="fas fa-play"></i>';
+                            }
+                        });
+
+                        video.play().catch(error => {
+                            console.error('Video playback error:', error);
+                        });
+                        overlay.classList.add('playing');
+                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    } else {
+                        video.pause();
+                        overlay.classList.remove('playing');
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    }
+                });
+
+                // Handle video end
+                video.addEventListener('ended', () => {
+                    video.currentTime = 0;
+                    overlay.classList.remove('playing');
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                });
+
+                // Reset video on mouse leave
+                card.addEventListener('mouseleave', () => {
+                    if (!video.paused) {
+                        video.pause();
+                        video.currentTime = 0;
+                        overlay.classList.remove('playing');
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    }
+                });
+
+                // Mobile-specific handling
+                if ('ontouchstart' in window) {
+                    video.setAttribute('controls', 'true');
+                    overlay.style.background = 'transparent';
+                }
+            });
+        });
+    </script>
+<!-- Add this inside the projects-wrapper div, after the first project card -->
+
+<!-- Eco Residences Project -->
+<div class="project-card">
+    <div class="project-media">
+        <div class="media-grid">
+            <img src="/api/placeholder/200/150" alt="Eco Residences - Main View">
+            <img src="/api/placeholder/200/150" alt="Eco Residences - Interior">
+            <video poster="/api/placeholder/200/150" playsinline preload="metadata">
+                <source src="https://storage.googleapis.com/webfundamentals-assets/videos/chrome.mp4" type="video/mp4">
+            </video>
+            <div class="more-media">
+                <span>+5 more</span>
+            </div>
+        </div>
+        <div class="project-overlay">
+            <span class="project-category">Residential</span>
+            <h3>Eco Residences</h3>
+            <p>Sustainable luxury apartments that blend comfort with environmental responsibility.</p>
+            <div class="project-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Vancouver, Canada</span>
+                <span><i class="fas fa-calendar-alt"></i> 2023</span>
+            </div>
+            <a href="#" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- Cultural Arts Center Project -->
+<div class="project-card">
+    <div class="project-media">
+        <img src="/api/placeholder/400/300" alt="Cultural Arts Center" class="project-image">
+        <div class="view-360-badge">
+            <i class="fas fa-vr-cardboard"></i>
+            360° View
+        </div>
+        <div class="project-overlay">
+            <span class="project-category">Cultural</span>
+            <h3>Cultural Arts Center</h3>
+            <p>A dynamic space designed to celebrate arts and community engagement.</p>
+            <div class="project-meta">
+                <span><i class="fas fa-map-marker-alt"></i> London, UK</span>
+                <span><i class="fas fa-calendar-alt"></i> 2024</span>
+            </div>
+            <a href="#" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- Add these styles after the existing styles in the style tag -->
+<style>
+/* Media Grid Styles */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 4px;
+    height: 100%;
+    background: #f1f5f9;
+}
+
+.media-grid img,
+.media-grid video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.more-media {
+    position: relative;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.more-media:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+.more-media span {
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+}
+
+/* 360 View Badge */
+.view-360-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0,0,0,0.7);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.view-360-badge:hover {
+    background: rgba(0,0,0,0.8);
+    transform: scale(1.05);
+}
+
+.view-360-badge i {
+    font-size: 1rem;
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Modal Base Styles */
+.gallery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .media-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    .view-360-badge {
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+</style>
+
+<!-- Add this modal markup at the end of the body, before the closing body tag -->
+<div class="gallery-modal" id="galleryModal">
+    <div class="modal-content">
+        <button class="modal-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-body">
+            <div class="modal-media">
+                <!-- Media content will be injected here -->
+            </div>
+            <div class="modal-thumbs">
+                <!-- Thumbnails will be injected here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add these modal styles to the style tag -->
+<style>
+/* Modal Content Styles */
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-media {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    background: #000;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-media img,
+.modal-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+    max-height: 100px;
+    overflow-x: auto;
+    padding: 0.5rem;
+}
+
+.thumb-item {
+    width: 100px;
+    height: 60px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.thumb-item.active {
+    border-color: var(--primary);
+}
+
+.thumb-item img,
+.thumb-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
+
+<!-- Add this JavaScript after the existing script -->
+<script>
+// Gallery Modal Functionality
+const modal = document.getElementById('galleryModal');
+const modalClose = modal.querySelector('.modal-close');
+const modalMedia = modal.querySelector('.modal-media');
+const modalThumbs = modal.querySelector('.modal-thumbs');
+
+// Sample media items for the gallery
+const galleryItems = [
+    { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 1' },
+    { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 2' },
+    { type: 'video', src: 'video tech.mp4', poster: '/api/placeholder/800/600' },
+    { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 3' },
+    { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 4' }
+];
+
+// Open modal with gallery items
+function openGalleryModal(items = galleryItems) {
+    modalMedia.innerHTML = '';
+    modalThumbs.innerHTML = '';
+    
+    // Set first item as main display
+    setMainMedia(items[0], 0);
+    
+    // Create thumbnails
+    items.forEach((item, index) => {
+        const thumb = document.createElement('div');
+        thumb.className = `thumb-item ${index === 0 ? 'active' : ''}`;
+        
+        if (item.type === 'video') {
+            const video = document.createElement('video');
+            video.src = item.src;
+            video.poster = item.poster;
+            thumb.appendChild(video);
+        } else {
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.alt = item.alt;
+            thumb.appendChild(img);
+        }
+        
+        thumb.addEventListener('click', () => {
+            document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+            setMainMedia(item, index);
+        });
+        
+        modalThumbs.appendChild(thumb);
+    });
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Set main media in modal
+function setMainMedia(item, index) {
+    modalMedia.innerHTML = '';
+    
+    if (item.type === 'video') {
+        const video = document.createElement('video');
+        video.src = item.src;
+        video.poster = item.poster;
+        video.controls = true;
+        modalMedia.appendChild(video);
+    } else {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.alt;
+        modalMedia.appendChild(img);
+    }
+}
+
+// Close modal
+modalClose.addEventListener('click', () => {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // Pause any playing videos
+    const activeVideo = modalMedia.querySelector('video');
+    if (activeVideo) activeVideo.pause();
+});
+
+// Open gallery on more-media click
+document.querySelectorAll('.more-media').forEach(button => {
+    button.addEventListener('click', () => openGalleryModal());
+});
+
+// Open 360 view on badge click
+document.querySelectorAll('.view-360-badge').forEach(badge => {
+    badge.addEventListener('click', () => {
+        alert('360° view functionality would be implemented here');
+    });
+});
+
+// Close modal on outside click
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modalClose.click();
+    }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('active')) return;
+    
+    if (e.key === 'Escape') {
+        modalClose.click();
+    }
+});
+</script>
+
+<!-- Cultural Arts Center Project -->
+<div class="project-card">
+    <div class="project-media">
+        <img src="/api/placeholder/400/300" alt="Cultural Arts Center" class="project-image">
+        <div class="view-360-badge">
+            <i class="fas fa-vr-cardboard"></i>
+            360° View
+        </div>
+        <div class="project-overlay">
+            <span class="project-category">Cultural</span>
+            <h3>Cultural Arts Center</h3>
+            <p>A dynamic space designed to celebrate arts and community engagement.</p>
+            <div class="project-meta">
+                <span><i class="fas fa-map-marker-alt"></i> London, UK</span>
+                <span><i class="fas fa-calendar-alt"></i> 2024</span>
+            </div>
+            <a href="#" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- Required CSS for this component -->
+<style>
+.project-card {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+}
+
+.project-media {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.view-360-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0,0,0,0.7);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.project-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    padding: 2rem;
+    color: var(--white);
+    transform: translateY(100%);
+    transition: var(--transition);
+}
+
+.project-category {
+    display: inline-block;
+    background: var(--primary);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.project-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+/* Hover states */
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.project-card:hover .project-overlay {
+    transform: translateY(0);
+}
+
+.view-360-badge:hover {
+    background: rgba(0,0,0,0.8);
+    transform: scale(1.05);
+}
+
+.project-link:hover {
+    color: var(--primary);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .project-overlay {
+        transform: translateY(0);
+        background: linear-gradient(transparent, rgba(0,0,0,0.95));
+    }
+
+    .project-media {
+        height: 250px;
+    }
+
+    .project-meta {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .view-360-badge {
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+</style>
+</body>
+</html>
