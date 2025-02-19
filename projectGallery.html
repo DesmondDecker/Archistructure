@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Projects Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #333;
+            --background: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s ease;
+            --container: 1400px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            color: var(--text-dark);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--text-dark);
+            margin: 5px 0;
+            transition: var(--transition);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-list {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: var(--white);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 3rem;
+                transition: var(--transition);
+            }
+
+            .nav-list.active {
+                left: 0;
+            }
+
+            .nav-item {
+                margin: 1.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="#" class="logo">Archi<span>structure</span>Group</a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="projects.html" class="nav-link">Projects</a></li>
+                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="team.html" class="nav-link">Team</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navList = document.querySelector('.nav-list');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                navList.classList.toggle('active');
+                document.body.style.overflow = navList.classList.contains('active') ? 'hidden' : '';
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.header-container') && navList.classList.contains('active')) {
+                    navList.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+
+    <!-- Add this after the header in the body -->
+<main>
+    <section class="projects-grid">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Projects</h2>
+                <p>Explore our diverse portfolio of architectural innovations</p>
+            </div>
+            
+            <div class="projects-wrapper">
+                <!-- Video Cards Row -->
+                <div class="row video-row">
+                    <h3 class="row-title">Featured Projects</h3>
+                    <div class="cards-container">
+                        <!-- Video Card 1 -->
+                        <div class="project-card video-card">
+                            <div class="project-media">
+                                <video class="project-video" playsinline preload="metadata">
+                                    <source src="01.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-overlay">
+                                    <button class="play-btn" aria-label="Play video">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <div class="media-loading"></div>
+                                </div>
+                                <div class="project-overlay">
+                                    <span class="project-category">Commercial</span>
+                                    <h3>Crystal Tower</h3>
+                                    <p>Modern office complex with sustainable design principles</p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> New York, USA</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Card 2 -->
+                        <div class="project-card video-card">
+                            <div class="project-media">
+                                <video class="project-video" playsinline preload="metadata">
+                                    <source src="02.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-overlay">
+                                    <button class="play-btn" aria-label="Play video">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <div class="media-loading"></div>
+                                </div>
+                                <div class="project-overlay">
+                                    <span class="project-category">Tech Campus</span>
+                                    <h3>Innovation Hub</h3>
+                                    <p>State-of-the-art technology campus with collaborative spaces</p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> Silicon Valley, USA</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Cards Row -->
+                <div class="row image-row">
+                    <h3 class="row-title">Recent Projects</h3>
+                    <div class="cards-container">
+                        <!-- Image Card 1 -->
+                        <div class="project-card image-card">
+                            <div class="project-media">
+                                <img src="img3.jpeg" alt="Eco Residences" class="project-image">
+                                <div class="project-overlay">
+                                    <span class="project-category">Residential</span>
+                                    <h3>Eco Residences</h3>
+                                    <p>Sustainable luxury apartments with green initiatives</p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> Vancouver, Canada</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Card 2 -->
+                        <div class="project-card image-card">
+                            <div class="project-media">
+                                <img src="img5.jpg" alt="Cultural Arts Center" class="project-image">
+                                <div class="view-360-badge">
+                                    <i class="fas fa-vr-cardboard"></i>
+                                    360° View
+                                </div>
+                                <div class="project-overlay">
+                                    <span class="project-category">Cultural</span>
+                                    <h3>Cultural Arts Center</h3>
+                                    <p>Dynamic space for arts and community engagement</p>
+                                    <div class="project-meta">
+                                        <span><i class="fas fa-map-marker-alt"></i> London, UK</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* Project Grid Styles */
+        .projects-grid {
+            padding: 6rem 0;
+            background: var(--background);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .row {
+            margin-bottom: 4rem;
+        }
+
+        .row-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Project Card Styles */
+        .project-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-media {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .project-video,
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .video-overlay.playing {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        .play-btn i {
+            font-size: 1.5rem;
+            margin-left: 4px;
+        }
+
+        .media-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 2rem;
+            color: var(--white);
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateY(0);
+        }
+
+        .project-category {
+            display: inline-block;
+            background: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .project-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-360-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .view-360-badge:hover {
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.05);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .project-overlay {
+                transform: translateY(0);
+                background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            }
+
+            .project-media {
+                height: 250px;
+            }
+
+            .project-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .row-title {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const videoCards = document.querySelectorAll('.video-card');
+        
+        videoCards.forEach(card => {
+            const video = card.querySelector('.project-video');
+            const playBtn = card.querySelector('.play-btn');
+            const overlay = card.querySelector('.video-overlay');
+            const loadingSpinner = card.querySelector('.media-loading');
+    
+            // Initialize video
+            video.load();
+            
+            // Set initial volume
+            video.volume = 0.5;
+    
+            // Add controls but hide them initially
+            video.controls = true;
+            video.style.controls = 'none';
+    
+            // Show loading spinner when video starts loading
+            video.addEventListener('loadstart', () => {
+                loadingSpinner.style.display = 'block';
+                playBtn.style.display = 'none';
+            });
+    
+            // Hide loading spinner when video can play
+            video.addEventListener('canplay', () => {
+                loadingSpinner.style.display = 'none';
+                playBtn.style.display = 'flex';
+                
+                // Set poster frame if video has one
+                if (video.poster) {
+                    video.style.backgroundImage = `url(${video.poster})`;
+                }
+            });
+    
+            // Handle video errors
+            video.addEventListener('error', () => {
+                loadingSpinner.style.display = 'none';
+                playBtn.style.display = 'flex';
+                console.error('Video loading error:', video.error);
+                
+                // Show error message to user
+                const errorOverlay = document.createElement('div');
+                errorOverlay.className = 'video-error-overlay';
+                errorOverlay.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Video loading error. Please try again.</span>
+                    </div>
+                `;
+                card.querySelector('.project-media').appendChild(errorOverlay);
+            });
+    
+            // Play/Pause functionality
+            function togglePlay() {
+                if (video.paused) {
+                    // Pause all other videos first
+                    document.querySelectorAll('.project-video').forEach(v => {
+                        if (v !== video && !v.paused) {
+                            const otherCard = v.closest('.video-card');
+                            const otherOverlay = otherCard.querySelector('.video-overlay');
+                            const otherPlayBtn = otherCard.querySelector('.play-btn');
+                            
+                            v.pause();
+                            otherOverlay.classList.remove('playing');
+                            otherPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                            v.controls = false;
+                        }
+                    });
+    
+                    // Play this video
+                    video.play().then(() => {
+                        overlay.classList.add('playing');
+                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        video.controls = true;
+                    }).catch(error => {
+                        console.error('Video playback error:', error);
+                        // Retry playback with user interaction
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => {
+                                // Show play button again if autoplay is blocked
+                                playBtn.style.display = 'flex';
+                            });
+                        }
+                    });
+                } else {
+                    video.pause();
+                    overlay.classList.remove('playing');
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    video.controls = false;
+                }
+            }
+    
+            // Click handlers
+            playBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePlay();
+            });
+    
+            card.querySelector('.project-media').addEventListener('click', (e) => {
+                // Prevent click when clicking overlay content
+                if (e.target.closest('.project-overlay')) return;
+                togglePlay();
+            });
+    
+            // Handle video end
+            video.addEventListener('ended', () => {
+                video.currentTime = 0;
+                overlay.classList.remove('playing');
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                video.controls = false;
+            });
+    
+            // Handle video progress
+            video.addEventListener('timeupdate', () => {
+                // Update custom progress bar if needed
+                const progress = (video.currentTime / video.duration) * 100;
+                // You can add a custom progress bar here if desired
+            });
+    
+            // Reset video on mouse leave
+            card.addEventListener('mouseleave', () => {
+                if (!video.paused) {
+                    video.pause();
+                    video.currentTime = 0;
+                    overlay.classList.remove('playing');
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    video.controls = false;
+                }
+            });
+    
+            // Mobile-specific handling
+            if ('ontouchstart' in window) {
+                video.controls = true;
+                overlay.style.background = 'transparent';
+            }
+        });
+    });
+    
+    // Add these styles to your existing CSS
+    document.head.insertAdjacentHTML('beforeend', `
+        <style>
+            .video-error-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 3;
+            }
+    
+            .error-message {
+                background: #ff4444;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+    
+            .error-message i {
+                font-size: 1.25rem;
+            }
+    
+            .project-video {
+                background-size: cover;
+                background-position: center;
+            }
+    
+            .project-video::-webkit-media-controls {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+    
+            .project-video.playing::-webkit-media-controls {
+                opacity: 1;
+            }
+    
+            @media (hover: none) {
+                .play-btn {
+                    transform: scale(0.8);
+                }
+                
+                .video-overlay {
+                    background: rgba(0,0,0,0.2);
+                }
+            }
+        </style>
+    `);
+    </script>
+
+    <!-- Add this modal markup at the end of the body tag -->
+<div class="gallery-modal" id="galleryModal">
+    <div class="modal-content">
+        <button class="modal-close" aria-label="Close gallery">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-body">
+            <div class="modal-media">
+                <!-- Media content will be injected here -->
+            </div>
+            <div class="modal-navigation">
+                <button class="nav-btn prev" aria-label="Previous image">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="nav-btn next" aria-label="Next image">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="modal-thumbs">
+                <!-- Thumbnails will be injected here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this 360° view modal -->
+<div class="view-360-modal" id="view360Modal">
+    <div class="modal-content">
+        <button class="modal-close" aria-label="Close 360° view">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="view-360-container">
+            <div class="view-360-stage">
+                <!-- 360° view content will be injected here -->
+            </div>
+            <div class="view-360-controls">
+                <button class="control-btn" aria-label="Rotate left">
+                    <i class="fas fa-undo"></i>
+                </button>
+                <button class="control-btn" aria-label="Auto-rotate">
+                    <i class="fas fa-sync"></i>
+                </button>
+                <button class="control-btn" aria-label="Rotate right">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modal Base Styles */
+.gallery-modal,
+.view-360-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-modal.active,
+.view-360-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-media {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    background: #000;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-media img,
+.modal-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-navigation {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.nav-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    pointer-events: auto;
+    opacity: 0.8;
+}
+
+.nav-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.modal-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+    max-height: 100px;
+    overflow-x: auto;
+    padding: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+.modal-thumbs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.modal-thumbs::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-thumbs::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 3px;
+}
+
+.thumb-item {
+    width: 100px;
+    height: 60px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.thumb-item.active {
+    border-color: var(--primary);
+}
+
+.thumb-item img,
+.thumb-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 360° View Styles */
+.view-360-container {
+    padding: 2rem;
+}
+
+.view-360-stage {
+    width: 100%;
+    height: 60vh;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.view-360-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.control-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: auto;
+    }
+
+    .modal-media {
+        height: 40vh;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .modal-thumbs {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .thumb-item {
+        width: 80px;
+        height: 50px;
+    }
+
+    .view-360-stage {
+        height: 40vh;
+    }
+}
+</style>
+
+<script>
+// Gallery functionality
+const galleryModal = document.getElementById('galleryModal');
+const view360Modal = document.getElementById('view360Modal');
+let currentImageIndex = 0;
+let galleryItems = [];
+
+// Sample gallery items (replace with your actual items)
+function initializeGallery(projectId) {
+    // This would typically come from your backend
+    galleryItems = [
+        { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 1' },
+        { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 2' },
+        { type: 'video', src: 'video tech.mp4', poster: '/api/placeholder/800/600' },
+        { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 3' },
+        { type: 'image', src: '/api/placeholder/800/600', alt: 'Project View 4' }
+    ];
+}
+
+function openGalleryModal(startIndex = 0) {
+    currentImageIndex = startIndex;
+    const modalMedia = galleryModal.querySelector('.modal-media');
+    const modalThumbs = galleryModal.querySelector('.modal-thumbs');
+    
+    modalMedia.innerHTML = '';
+    modalThumbs.innerHTML = '';
+    
+    // Set main media
+    setMainMedia(galleryItems[currentImageIndex]);
+    
+    // Create thumbnails
+    galleryItems.forEach((item, index) => {
+        const thumb = document.createElement('div');
+        thumb.className = `thumb-item ${index === currentImageIndex ? 'active' : ''}`;
+        
+        if (item.type === 'video') {
+            const video = document.createElement('video');
+            video.src = item.src;
+            video.poster = item.poster;
+            thumb.appendChild(video);
+        } else {
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.alt = item.alt;
+            thumb.appendChild(img);
+        }
+        
+        thumb.addEventListener('click', () => {
+            currentImageIndex = index;
+            updateGallery();
+        });
+        
+        modalThumbs.appendChild(thumb);
+    });
+    
+    galleryModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function setMainMedia(item) {
+    const modalMedia = galleryModal.querySelector('.modal-media');
+    modalMedia.innerHTML = '';
+    
+    if (item.type === 'video') {
+        const video = document.createElement('video');
+        video.src = item.src;
+        video.poster = item.poster;
+        video.controls = true;
+        modalMedia.appendChild(video);
+    } else {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.alt;
+        modalMedia.appendChild(img);
+    }
+}
+
+function updateGallery() {
+    setMainMedia(galleryItems[currentImageIndex]);
+    
+    // Update thumbnails
+    const thumbs = galleryModal.querySelectorAll('.thumb-item');
+    thumbs.forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === currentImageIndex);
+    });
+}
+
+function navigateGallery(direction) {
+    currentImageIndex = (currentImageIndex + direction + galleryItems.length) % galleryItems.length;
+    updateGallery();
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize gallery
+    initializeGallery();
+    
+    // Gallery navigation
+    galleryModal.querySelector('.nav-btn.prev').addEventListener('click', () => navigateGallery(-1));
+    galleryModal.querySelector('.nav-btn.next').addEventListener('click', () => navigateGallery(1));
+    
+    // Close modals
+    document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', () => {
+            galleryModal.classList.remove('active');
+            view360Modal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+    
+    // Open gallery on more-media click
+    document.querySelectorAll('.more-media').forEach(button => {
+        button.addEventListener('click', () => openGalleryModal());
+    });
+    
+    // Open 360 view
+    document.querySelectorAll('.view-360-badge').forEach(badge => {
+        badge.addEventListener('click', () => {
+            view360Modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Initialize 360 view (implement based on your 360 view solution)
+        });
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (galleryModal.classList.contains('active')) {
+            if (e.key === 'ArrowLeft') navigateGallery(-1);
+            if (e.key === 'ArrowRight') navigateGallery(1);
+            if (e.key === 'Escape') galleryModal.querySelector('.modal-close').click();
+        }
+    });
+});
+</script>
+
+<!-- Project Details Section -->
+<section class="project-details">
+    <div class="container">
+        <div class="details-grid">
+            <!-- Featured Project -->
+            <div class="featured-project">
+                <h3 class="row-title">Project Spotlight</h3>
+                <div class="project-highlight">
+                    <img src="6.jpeg" alt="Spotlight Project" class="highlight-image">
+                    <div class="highlight-content">
+                        <span class="project-category">Mixed-Use</span>
+                        <h2>Urban Living Hub</h2>
+                        <p>A revolutionary mixed-use development combining residential, retail, and community spaces in the heart of the city.</p>
+                        <div class="highlight-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-building"></i>
+                                <span>45,000 m²</span>
+                                <p>Total Area</p>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-leaf"></i>
+                                <span>LEED Platinum</span>
+                                <p>Certification</p>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>2024</span>
+                                <p>Completion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Categories -->
+            <div class="project-categories">
+                <h3 class="row-title">Categories</h3>
+                <div class="category-grid">
+                    <a href="#residential" class="category-card">
+                        <i class="fas fa-home"></i>
+                        <h4>Residential</h4>
+                        <span>12 Projects</span>
+                    </a>
+                    <a href="#commercial" class="category-card">
+                        <i class="fas fa-building"></i>
+                        <h4>Commercial</h4>
+                        <span>8 Projects</span>
+                    </a>
+                    <a href="#cultural" class="category-card">
+                        <i class="fas fa-landmark"></i>
+                        <h4>Cultural</h4>
+                        <span>5 Projects</span>
+                    </a>
+                    <a href="#sustainable" class="category-card">
+                        <i class="fas fa-leaf"></i>
+                        <h4>Sustainable</h4>
+                        <span>7 Projects</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo">Archi<span>structure</span>Group</a>
+                <p>Innovative architectural solutions for tomorrow's world.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 19 OAU Villa Hill station, Freetown, Sierra Leone. </li>
+                    <li><i class="fas fa-phone"></i>+232-99 339 448<br>+232 79 760 503 </li>
+                    <li><i class="fas fa-envelope"></i> info@archistruct.com</li>
+                </ul>
+            </div>
+      
+        <div class="footer-bottom">
+            <p>&copy; 2024 ArchistructureGroup. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+/* Project Details Styles */
+.project-details {
+    padding: 4rem 0;
+    background: var(--background);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.featured-project {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.project-highlight {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.highlight-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.highlight-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.highlight-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: 8px;
+}
+
+.stat-item i {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat-item span {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+}
+
+.stat-item p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+/* Category Grid Styles */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.category-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.category-card i {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.category-card h4 {
+    margin-bottom: 0.5rem;
+}
+
+.category-card span {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+/* Filter Styles */
+.project-filters {
+    padding: 2rem 0;
+    background: var(--white);
+    border-bottom: 1px solid #eee;
+}
+
+.filter-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: var(--background);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.sort-select {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 25px;
+    background: var(--white);
+    cursor: pointer;
+}
+
+/* Footer Styles */
+.site-footer {
+    background: var(--secondary);
+    color: var(--white);
+    padding: 4rem 0 2rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-brand p {
+    margin: 1rem 0;
+    color: #999;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+}
+
+.footer-links ul,
+.footer-contact ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li,
+.footer-contact li {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: #999;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    color: var(--white);
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #999;
+}
+
+
+
+.footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    color: #999;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-highlight {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
+    
+    .sort-group {
+        width: 100%;
+    }
+    
+    .sort-select {
+        width: 100%;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+}
+</style>
+<!-- Add this right before the closing </body> tag -->
+
+<!-- Filter Functionality Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const sortSelect = document.querySelector('.sort-select');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        // Store original order of projects
+        const originalOrder = [...projectCards].map(card => ({
+            element: card,
+            timestamp: new Date(card.dataset.date || '2024-01-01').getTime(),
+            name: card.querySelector('h3').textContent
+        }));
+        
+        function filterProjects(category) {
+            projectCards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = '';
+                    card.classList.add('fade-in');
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('fade-in');
+                }
+            });
+        }
+        
+        function sortProjects(criteria) {
+            const container = document.querySelector('.cards-container');
+            const currentCards = [...projectCards].filter(card => 
+                card.style.display !== 'none'
+            );
+            
+            const sortedCards = currentCards.sort((a, b) => {
+                switch(criteria) {
+                    case 'newest':
+                        return new Date(b.dataset.date) - new Date(a.dataset.date);
+                    case 'oldest':
+                        return new Date(a.dataset.date) - new Date(b.dataset.date);
+                    case 'name':
+                        return a.querySelector('h3').textContent.localeCompare(
+                            b.querySelector('h3').textContent
+                        );
+                    default:
+                        return 0;
+                }
+            });
+            
+            sortedCards.forEach(card => container.appendChild(card));
+        }
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterProjects(btn.dataset.filter);
+                sortProjects(sortSelect.value);
+            });
+        });
+        
+        sortSelect.addEventListener('change', () => {
+            sortProjects(sortSelect.value);
+        });
+    });
+    </script>
+    
+  
+    <!-- Intersection Observer for Animations -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all project cards and sections
+        document.querySelectorAll('.project-card, .section-header, .featured-project')
+            .forEach(element => observer.observe(element));
+    });
+    </script>
+    
+    <!-- Add these additional styles -->
+    <style>
+    /* Animation Styles */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    /* Loading State Styles */
+    .loading {
+        position: relative;
+        pointer-events: none;
+    }
+    
+    .loading::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Accessibility Improvements */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+    
+    /* Focus States */
+    button:focus-visible,
+    a:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+    
+    /* Print Styles */
+    @media print {
+        .header,
+        .project-filters,
+        .modal-close,
+        .nav-btn,
+        .newsletter-form,
+        .social-links {
+            display: none !important;
+        }
+        
+        .project-card {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+    }
+    </style>
+    
+    
